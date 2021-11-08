@@ -1,4 +1,6 @@
 loadPackages <- function(pkgs){
   if(!"pacman"%in%installed.packages()[,"Package"]) install.packages("pacman")
-  pacman::p_load(pkgs)
+  for (pkg in pkgs){
+    pacman::p_load(pkg)
+    }
 }
