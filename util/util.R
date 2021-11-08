@@ -4,3 +4,4 @@ loadPackages <- function(pkgs){
     pacman::p_load(pkg)
     }
 }
+
