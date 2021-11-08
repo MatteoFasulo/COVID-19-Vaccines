@@ -1,4 +1,4 @@
-source("https://raw.githubusercontent.com/MatteoFasulo/Rare-Earth/main/util/coreFunctions.R")
+source("https://raw.githubusercontent.com/MatteoFasulo/Rare-Earth/main/R/util/coreFunctions.R")
 loadPackages(libraries=c("stargazer","plm"))
 ################################################################################
 
