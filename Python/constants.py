@@ -1,0 +1,1 @@
+LATEST_REPORT_URL = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/somministrazioni-vaccini-latest.csv"

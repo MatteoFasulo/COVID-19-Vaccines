@@ -1,7 +1,11 @@
 import os
 
-def main()
-  print("Main")
+import util
 
-if __name__ == "__main__"
+def main():
+  print("Hello")
+  
+
+if __name__ == "__main__":
+  util.getLatestVaccineReport()
   main()
