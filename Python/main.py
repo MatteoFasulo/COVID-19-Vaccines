@@ -3,9 +3,9 @@ import os
 import util
 
 def main():
-  print("Hello")
+  print("All good, you can go")
   
 
 if __name__ == "__main__":
-  util.getLatestVaccineReport()
-  main()
+  if util.getLatestVaccineReport() is True:
+    main()
