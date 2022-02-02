@@ -1,5 +1,5 @@
 source("https://raw.githubusercontent.com/MatteoFasulo/COVID-19-Vaccines/main/R/util/coreFunctions.R")
-loadPackages(libraries=c("dplyr","magrittr","plotly","ggplot2","jsonlite","gamlss"))
+loadPackages(libraries=c("dplyr","magrittr","plotly","ggplot2","jsonlite","gamlss","stargazer"))
 ################################################################################
 getLatestVaccubeReport <- function(fileName='data/latest.csv'){
   if (dir.exists('data') == FALSE){
@@ -64,12 +64,12 @@ vaccinati %>%
   ggplot(., aes(x = fascia_anagrafica, y = seconda_dose, fill = fornitore)) +
   geom_bar(stat = 'identity', position = 'stack') + facet_grid(rows = vars(nome_area), scales = "free", space = "free") +
   coord_flip() +
-  theme(strip.text.y = element_text(angle = 0, size=rel(.6)),
-        axis.text.y = element_text(angle = 0, size=rel(.8))) +
+  theme(strip.text.y = element_text(angle = 0, size=rel(2)),
+        axis.text.y = element_text(angle = 0, size=rel(2))) +
   ylab("")+
   xlab("Fascia di età")
 
-ggsave('complete.png',dpi = 320, height = 14, width = 8)
+ggsave('complete.png',dpi = 320, height = 28, width = 16)
 
 
 getDataFromJSON <- function(fileName='regionSVI_PIL.json'){
@@ -98,21 +98,12 @@ model <- lm(coverage~PIL+mono_Family+six_more_Family+low_Educ+house_Crow+ass_Une
 step.model <- step(model, direction = "backward",trace = F,k=log(nrow(finalDF)))
 summary(step.model)
 
+stargazer(cbind(Coef = coef(step.model), confint(step.model)), summary = F)
 
-finalDF$binCoverage <- cut(finalDF$coverage,breaks = c(0,mean(finalDF$coverage),0.8), labels = c(0,1))
+finalDF$binCoverage <- cut(finalDF$coverage,breaks = c(0,mean(finalDF$coverage),0.85), labels = c(0,1))
 logit.model <- gamlss(binCoverage~PIL+mono_Family+six_more_Family+low_Educ+house_Crow+ass_Unease+u30_Unemployed+eco_Unease,family=BI(),data=finalDF)
 summary(logit.model)
 
-temp <- finalDF %>%
-  group_by(codice_regione_ISTAT) %>%
-  dplyr::select(mono_Family,six_more_Family,low_Educ,ass_Unease,house_Crow,u30_Unemployed,eco_Unease,PIL) %>%
-  filter(row_number()==1) %>%
-  as.data.frame(.)
-
-tempDF <- as.data.frame(scale(temp[,-1]))
-
-fviz_nbclust(tempDF, kmeans, nstart=50, method = "wss", k.max=9)+
-  theme_classic() # 5
-
-km.res <- kmeans(tempDF, 2, nstart=50)
-print(km.res)
+logisticOutput <- exp(cbind(OR = coef(logit.model), confint(logit.model)))
+logisticOutput <- as.data.frame(logisticOutput)
+stargazer(logisticOutput, summary = F)
