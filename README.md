@@ -1,2 +1,3 @@
 # Italy COVID-19 analysis of vaccine coverage reasons
-<object data="./COVID_19_Vaccine_Coverage.pdf" width="1000" height="1000" type='application/pdf'></object>
+<a href="COVID_19_Vaccine_Coverage.pdf" class="image fit"><img src="images/marr_pic.jpg" alt=""></a>
+
