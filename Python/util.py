@@ -1,4 +1,3 @@
-from genericpath import exists
 import os
 import urllib.request
 import pandas as pd
